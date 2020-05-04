@@ -1,2 +1,5 @@
 *.txt
 .DS_Store
+.vscode/
+training_checkpoints/
+data/
