@@ -3,3 +3,4 @@
 .vscode/
 training_checkpoints/
 data/
+__pycache__
