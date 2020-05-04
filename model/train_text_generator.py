@@ -64,6 +64,6 @@ checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(
     save_weights_only=True)
 
 # Number of epochs (full training pass over the entire dataset)
-EPOCHS = 1
+EPOCHS = 10
 # Train the model
 history = model.fit(dataset, epochs=EPOCHS, callbacks=[checkpoint_callback])
