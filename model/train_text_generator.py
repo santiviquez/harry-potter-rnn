@@ -17,7 +17,7 @@ def loss(labels, logits):
 
 
 # Read text
-path_to_file = '../data/hp1.txt'
+path_to_file = 'data/hp1.txt'
 text = open(path_to_file, 'rb').read().decode(encoding='utf-8')
 # Build a vocabulary of unique characters in the text
 vocab = sorted(set(text))
@@ -56,7 +56,7 @@ model = build_model(vocab_size=vocab_size,
 model.compile(optimizer='adam', loss=loss)
 
 # Define checkpoint path for each batch
-checkpoint_path = "../training_checkpoints/cp-{epoch:04d}.ckpt"
+checkpoint_path = "training_checkpoints/cp-{epoch:04d}.ckpt"
 checkpoint_dir = os.path.dirname(checkpoint_path)
 checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(
     filepath=checkpoint_path,
