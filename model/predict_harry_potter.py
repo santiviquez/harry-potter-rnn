@@ -9,7 +9,6 @@ path_to_file = None
 
 
 def load_model():
-        print('Holaaaa')
         path_to_file = 'data/hp1.txt'
         # Read text
         text = open(path_to_file, 'rb').read().decode(encoding='utf-8')
