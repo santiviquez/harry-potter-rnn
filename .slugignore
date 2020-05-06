@@ -1,5 +1,0 @@
-.DS_Store
-.vscode/
-__pycache__
-model/train_text_generator.py
-data/

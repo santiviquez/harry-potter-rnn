@@ -5,6 +5,36 @@ from model.predict_harry_potter import generate_text
 from model.rnn import build_model
 import os
 
+model = None
+
+
+def load_model():
+    path_to_file = 'data/hp1.txt'
+    # Read text
+    text = open(path_to_file, 'rb').read().decode(encoding='utf-8')
+    # Unique characters in the text
+    vocab_size = len(sorted(set(text)))
+    # The embedding dimension
+    embedding_dim = 256
+    # Number of RNN units
+    rnn_units = 1024
+    # Build network structure
+    model = build_model(vocab_size, embedding_dim, rnn_units, batch_size=1)
+
+    checkpoint_path = "training_checkpoints/cp-{epoch:04d}.ckpt"
+    checkpoint_dir = os.path.dirname(checkpoint_path)
+
+    # Load the weights of our latest learned model
+    model.load_weights(tf.train.latest_checkpoint(checkpoint_dir))
+    # Build the learned model
+    model.build(tf.TensorShape([1, None]))
+    return model
+
+if model:
+    pass
+else:
+    model = load_model()
+
 # Streamlit app title
 st.markdown('## **Harry Potter** *And The Deep Learning Experiment*')
 st.markdown('')
@@ -33,36 +63,7 @@ temperature = st.slider(label='Tempeture (low: predictable, high: weird)',
                         min_value=0.01, max_value=1.5, value=0.8)
 
 
-
-path_to_file = 'data/hp1.txt'
-# Read text
-text = open(path_to_file, 'rb').read().decode(encoding='utf-8')
-# Unique characters in the text
-vocab = sorted(set(text))
-
-# Map each unique char to a different index
-char2idx = {u: i for i, u in enumerate(vocab)}
-# Map the index to the respective char
-idx2char = np.array(vocab)
-
 if st.button('Create Story'):
-    # Length of the vocabulary in charts
-    vocab_size = len(vocab)
-    # The embedding dimension
-    embedding_dim = 256
-    # Number of RNN units
-    rnn_units = 1024
-    # Build network structure
-    model = build_model(vocab_size, embedding_dim, rnn_units, batch_size=1)
-
-    checkpoint_path = "training_checkpoints/cp-{epoch:04d}.ckpt"
-    checkpoint_dir = os.path.dirname(checkpoint_path)
-
-    # Load the weights of our latest learned model
-    model.load_weights(tf.train.latest_checkpoint(checkpoint_dir))
-    # Build the learned model
-    model.build(tf.TensorShape([1, None]))
-
     # Make predictions
     predicted_text = generate_text(
         model, start_string=character_option + ' ', num_generate=int(num_generate), temperature=temperature)

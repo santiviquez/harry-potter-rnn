@@ -3,6 +3,25 @@ import numpy as np
 import os
 
 
+path_to_file = None
+
+
+def calculate_id_char_mapping():
+
+    path_to_file = 'data/hp1.txt'
+    # Read text
+    text = open(path_to_file, 'rb').read().decode(encoding='utf-8')
+    # Unique characters in the text
+    vocab = sorted(set(text))
+
+    # Map each unique char to a different index
+    char2idx = {u: i for i, u in enumerate(vocab)}
+    # Map the index to the respective char
+    idx2char = np.array(vocab)
+
+    return char2idx, idx2char
+
+
 def generate_text(model, start_string, num_generate=1000, temperature=1.0):
     '''Generates text using the learned model'''
 
@@ -33,13 +52,7 @@ def generate_text(model, start_string, num_generate=1000, temperature=1.0):
     return (start_string + ''.join(text_generated))
 
 
-path_to_file = 'data/hp1.txt'
-# Read text
-text = open(path_to_file, 'rb').read().decode(encoding='utf-8')
-# Unique characters in the text
-vocab = sorted(set(text))
-
-# Map each unique char to a different index
-char2idx = {u: i for i, u in enumerate(vocab)}
-# Map the index to the respective char
-idx2char = np.array(vocab)
+if path_to_file:
+    pass
+else:
+    char2idx, idx2char = calculate_id_char_mapping()
