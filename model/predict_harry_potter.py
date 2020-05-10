@@ -3,10 +3,7 @@ import numpy as np
 from model.rnn import build_model
 import os
 
-
-
 path_to_file = None
-
 
 def load_model():
         path_to_file = 'data/hp1.txt'
@@ -32,7 +29,6 @@ def load_model():
 
 
 def calculate_id_char_mapping():
-
     path_to_file = 'data/hp1.txt'
     # Read text
     text = open(path_to_file, 'rb').read().decode(encoding='utf-8')
@@ -47,7 +43,7 @@ def calculate_id_char_mapping():
     return char2idx, idx2char
 
 
-def generate_text(model, start_string, num_generate=1000, temperature=1.0):
+def generate_text(model, start_string, char2idx, idx2char, num_generate=1000, temperature=1.0):
     '''Generates text using the learned model'''
 
     # Converting our start string to numbers
@@ -76,8 +72,8 @@ def generate_text(model, start_string, num_generate=1000, temperature=1.0):
 
     return (start_string + ''.join(text_generated))
 
-
-if path_to_file:
-    pass
-else:
-    char2idx, idx2char = calculate_id_char_mapping()
+def char2idx_calc():
+    if path_to_file:
+        pass
+    else:
+        char2idx, idx2char = calculate_id_char_mapping()

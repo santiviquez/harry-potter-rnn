@@ -1,12 +1,13 @@
 import streamlit as st
-from model.predict_harry_potter import generate_text, load_model
+from model.predict_harry_potter import generate_text, load_model, calculate_id_char_mapping
 import os
+import tensorflow as tf
+#import tensorflow.Session
 
-
-def make_predictions(model, character_option, num_generate, temperature):
+def make_predictions(model, character_option, char2idx,idx2char, num_generate, temperature):
     # Make predictions
     predicted_text = generate_text(
-        model, start_string=character_option + ' ', num_generate=int(num_generate), temperature=temperature)
+        model, start_string=character_option + ' ',char2idx=char2idx,idx2char=idx2char, num_generate=int(num_generate), temperature=temperature)
     return predicted_text
 
 
@@ -36,12 +37,23 @@ if character_option == 'Voldemort':
 # Higher temperatures results in more surprising text.
 temperature = st.slider(label='Tempeture (low: predictable, high: weird)', 
                         min_value=0.01, max_value=1.5, value=0.8)
+import typing
+@st.cache(allow_output_mutation=True, hash_funcs=None)
+def load_tf_model():
+    print("calculating load_tf_model. SHOULD ONLY BECALLED ONCE")
+    return load_model()
 
+@st.cache()
+def build_char_idx():
+    print("calculating char2idx. SHOULD ONLY BECALLED ONCE")
+    return calculate_id_char_mapping()
 
 if st.button('Create Story'):
-        model = load_model()
+        print("\nRunning new story request")
+        char2idx, idx2char = build_char_idx()
+        model = load_tf_model()
         predicted_text = make_predictions(
-            model, character_option, num_generate, temperature)
+            model, character_option,char2idx,idx2char, num_generate, temperature)
         st.write(predicted_text)
 
 
