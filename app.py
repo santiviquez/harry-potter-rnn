@@ -2,7 +2,7 @@ import streamlit as st
 from model.predict_harry_potter import generate_text, load_model, calculate_id_char_mapping
 import os
 import tensorflow as tf
-#import tensorflow.Session
+import typing
 
 def make_predictions(model, character_option, char2idx,idx2char, num_generate, temperature):
     # Make predictions
@@ -37,7 +37,7 @@ if character_option == 'Voldemort':
 # Higher temperatures results in more surprising text.
 temperature = st.slider(label='Tempeture (low: predictable, high: weird)', 
                         min_value=0.01, max_value=1.5, value=0.8)
-import typing
+
 @st.cache(allow_output_mutation=True, hash_funcs=None)
 def load_tf_model():
     print("calculating load_tf_model. SHOULD ONLY BECALLED ONCE")
